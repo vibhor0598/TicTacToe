@@ -32,6 +32,11 @@ export default function Game() {
         )
     })
 
+    const reset = () => {
+        setHistory([Array(9).fill(null)])
+        setCurrentMove(0)
+    }
+
 
 
     return (
@@ -40,6 +45,7 @@ export default function Game() {
                 <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
             </div>
             <div className="game-info">
+            <button style ={{margin:"25px 100px", width:"100px" , height:"50px"}}onClick={reset}>Reset</button>
                 <ol>{moves}</ol>
             </div>
         </div>
