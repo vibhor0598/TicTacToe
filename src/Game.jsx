@@ -3,31 +3,41 @@ import Board from "./Board"
 export default function Game() {
     const [history, setHistory] = useState([Array(9).fill(null)])
     const [currentMove, setCurrentMove] = useState(0);
-    const xIsNext = currentMove%2 ===0;
-    const currentSquares = history[currentMove ]
+    const xIsNext = currentMove % 2 === 0;
+    const currentSquares = history[currentMove]
 
     const handlePlay = (nextSquares) => {
-        const nextHistory = [...history.slice(0,currentMove+1),nextSquares];
+        const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
         setHistory(nextHistory)
-        setCurrentMove(nextHistory.length-1)
+        setCurrentMove(nextHistory.length - 1)
         // setXIsNext(!xIsNext);
     }
 
-    const jumpTo = (nextMove) => { 
+    const jumpTo = (nextMove) => {
         setCurrentMove(nextMove);
         // setXIsNext(nextMove%2 ===0)
     }
 
-    const moves = history.map((squares,move) => {
+    const moves = history.map((squares, move) => {
         let description;
-        if (move>0){
+        let ongoing_move = false;
+        if (move === currentMove) {
+            description = "You are at move #" + move
+            ongoing_move=true
+        }
+        else if (move > 0) {
             description = 'go to move #' + move;
-        } else{
+        }
+        else {
             description = 'Go to game start';
         }
         return (
             <li key={move}>
-                <button style={{margin : "5px"}} onClick={() => jumpTo(move)}>{description}</button>
+                {ongoing_move ? <p  style={{ margin: "5px" }} >{description}</p>:<button
+                    style={{ margin: "5px" }}
+                    onClick={() => jumpTo(move)}>
+                    {description}
+                </button>}
             </li>
         )
     })
@@ -35,7 +45,7 @@ export default function Game() {
     const reset = () => {
         setHistory([Array(9).fill(null)])
         setCurrentMove(0)
-    }
+    } 
 
 
 
@@ -45,7 +55,8 @@ export default function Game() {
                 <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
             </div>
             <div className="game-info">
-            <button style ={{margin:"25px 100px", width:"100px" , height:"50px"}}onClick={reset}>Reset</button>
+                <button style={{ margin: "25px 100px", width: "100px", height: "50px" }} onClick={reset}>Reset</button>
+                {/* <button style={{ margin: "25px 100px", width: "100px", height: "50px" }} onClick={sort_moves}>Sort Moves</button> */}
                 <ol>{moves}</ol>
             </div>
         </div>
